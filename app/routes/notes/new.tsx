@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/notes/${note.id}`);
 };
 
-export default function NewNotePage() {
+export function NewNotePage() {
   const actionData = useActionData() as ActionData;
   const titleRef = React.useRef<HTMLInputElement>(null);
   const bodyRef = React.useRef<HTMLTextAreaElement>(null);
