@@ -12,7 +12,7 @@ export const loader = async () => {
 
   return defer({
     health: await health,
-    streaming,
+    // streaming,
   });
 };
 
@@ -24,39 +24,48 @@ export default function Index() {
   return (
     <div className="p-4 sm:rounded-md bg-slate-200">
       <h1 className="text-lg font-semibold mb-2 sm:mb-0">Beeper</h1>
-      <p className="sm:pl-4">
-        Built With <Link to="https://turbo.build/repo">Turborepo</Link> +{" "}
-        <Link to="https://remix.run/">Remix</Link>
-      </p>
-      <p className={clsx(textClasses)}>
-        The API is {data.health.ok ? "Running" : "Not Running"}
-      </p>
-      <Suspense
-        fallback={
-          <p className={clsx(textClasses, "text-yellow-600")}>
-            Loading streaming response, this will take a few seconds...
-          </p>
-        }
-      >
-        <Await
-          resolve={data.streaming}
-          errorElement={
-            <p className={clsx(textClasses, "text-red-400")}>
-              Unable to stream from API! Try restarting everything...
+      <div className="mb-2">
+        <p className="sm:pl-4">
+          Built With <Link to="https://turbo.build/repo">Turborepo</Link> +{" "}
+          <Link to="https://remix.run/">Remix</Link>
+        </p>
+        <p className={clsx(textClasses)}>
+          The API is {data.health.ok ? "Running" : "Not Running"}
+        </p>
+        {/* <Suspense
+          fallback={
+            <p className={clsx(textClasses, "text-yellow-600")}>
+              Loading streaming response, this will take a few seconds...
             </p>
           }
         >
-          {(streaming) => {
-            const { duration } = streaming;
-
-            return (
-              <p className={clsx(textClasses, "text-green-600")}>
-                The API is streaming! Took {duration}.
+          <Await
+            resolve={data.streaming}
+            errorElement={
+              <p className={clsx(textClasses, "text-red-400")}>
+                Unable to stream from API! Try restarting everything...
               </p>
-            );
-          }}
-        </Await>
-      </Suspense>
+            }
+          >
+            {(streaming) => {
+              const { duration } = streaming;
+
+              return (
+                <p className={clsx(textClasses, "text-green-600")}>
+                  The API is streaming! Took {duration}.
+                </p>
+              );
+            }}
+          </Await>
+        </Suspense> */}
+      </div>
+      <button
+        className="p-2 bg-green-500 text-white rounded text-sm hover:text-green-100"
+        type="button"
+        onClick={() => location.replace(`/login`)}
+      >
+        Login with Spotify
+      </button>
     </div>
   );
 }

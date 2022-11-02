@@ -24,6 +24,18 @@
         "^build"
       ]
     },
+    "api#build": {
+      "env": [
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_REDIRECT"
+      ],
+      "outputs": [
+        "dist/**"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "test": {
       "outputs": [
         "coverage/**"

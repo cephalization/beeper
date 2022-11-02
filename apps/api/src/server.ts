@@ -2,11 +2,14 @@ import { json, urlencoded } from "body-parser";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import { routes } from "./routes";
 
 export const createServer = () => {
   const app = express();
   app
     .disable("x-powered-by")
+    .use(cookieParser())
     .use(morgan("dev"))
     .use(urlencoded({ extended: true }))
     .use(json())
@@ -25,6 +28,10 @@ export const createServer = () => {
         duration: `${(Date.now() - requestStart) / 1000}s`,
       });
     });
+
+  routes.forEach(([routeName, router]) => {
+    app.use(routeName, router);
+  });
 
   return app;
 };
