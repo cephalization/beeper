@@ -1,3 +1,5 @@
+import type { Profile } from "./spotify/profile";
+
 export type SpotifyAuthorizationResponse = {
   access_token: string;
   token_type: string;
@@ -5,4 +7,17 @@ export type SpotifyAuthorizationResponse = {
   refresh_token: string;
   scope: string;
   expires: Date;
+};
+
+export type SpotifyProfileResponse = Profile;
+
+export type AuthorizationCallbackResponse = SpotifyAuthorizationResponse & {
+  profile: SpotifyProfileResponse;
+};
+
+export type AuthCookie = {
+  access_token: string;
+  refresh_token: string;
+  image_url?: string;
+  name: string;
 };

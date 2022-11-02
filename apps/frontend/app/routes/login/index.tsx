@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { getLogin } from "~/data/login";
+import { getLogin } from "~/data/api/login";
 
 export const loader = async () => {
   const res = await getLogin();

@@ -1,71 +1,25 @@
-import { defer } from "@remix-run/node";
-import { Await, useLoaderData } from "@remix-run/react";
-import clsx from "clsx";
-import { Suspense } from "react";
+import type { LoaderArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 
-import Link from "~/components/Link";
-import { getHealth, getStreamingHealth } from "~/data/health";
+import { validateAuthentication } from "~/cookies";
 
-export const loader = async () => {
-  const health = getHealth();
-  const streaming = getStreamingHealth();
+export const loader = async ({ request }: LoaderArgs) => {
+  const [valid] = await validateAuthentication(request);
+  if (valid) {
+    return redirect("/dashboard");
+  }
 
-  return defer({
-    health: await health,
-    // streaming,
-  });
+  return null;
 };
 
-const textClasses = "sm:pl-4 text-sm";
-
 export default function Index() {
-  const data = useLoaderData<typeof loader>();
-
   return (
-    <div className="p-4 sm:rounded-md bg-slate-200">
-      <h1 className="text-lg font-semibold mb-2 sm:mb-0">Beeper</h1>
-      <div className="mb-2">
-        <p className="sm:pl-4">
-          Built With <Link to="https://turbo.build/repo">Turborepo</Link> +{" "}
-          <Link to="https://remix.run/">Remix</Link>
-        </p>
-        <p className={clsx(textClasses)}>
-          The API is {data.health.ok ? "Running" : "Not Running"}
-        </p>
-        {/* <Suspense
-          fallback={
-            <p className={clsx(textClasses, "text-yellow-600")}>
-              Loading streaming response, this will take a few seconds...
-            </p>
-          }
-        >
-          <Await
-            resolve={data.streaming}
-            errorElement={
-              <p className={clsx(textClasses, "text-red-400")}>
-                Unable to stream from API! Try restarting everything...
-              </p>
-            }
-          >
-            {(streaming) => {
-              const { duration } = streaming;
-
-              return (
-                <p className={clsx(textClasses, "text-green-600")}>
-                  The API is streaming! Took {duration}.
-                </p>
-              );
-            }}
-          </Await>
-        </Suspense> */}
+    <div>
+      <h1 className="text-2xl font-bold">Beeper</h1>
+      <div className="p-4 mt-4 rounded-sm bg-slate-200 font-light">
+        <p>Search for tracks on spotify, see info about em.</p>
+        <p>Connect your Spotify account to Beeper, see info about yourself.</p>
       </div>
-      <button
-        className="p-2 bg-green-500 text-white rounded text-sm hover:text-green-100"
-        type="button"
-        onClick={() => location.replace(`/login`)}
-      >
-        Login with Spotify
-      </button>
     </div>
   );
 }

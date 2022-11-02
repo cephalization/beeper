@@ -13,6 +13,8 @@
     "clean": "rm -rf .cache .turbo build public/build node_modules"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.3",
+    "@heroicons/react": "^2.0.13",
     "@remix-run/node": "deferred",
     "@remix-run/react": "deferred",
     "clsx": "^1.2.1",
@@ -32,11 +34,11 @@
     "eslint-config-custom": "*",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.17",
+    "shared-types": "*",
     "tailwind-config": "*",
     "tailwindcss": "^3.1.8",
     "tsconfig": "*",
-    "typescript": "^4.8.3",
-    "shared-types": "*"
+    "typescript": "^4.8.3"
   },
   "engines": {
     "node": ">=14"

@@ -1,34 +1,32 @@
 import { redirect, type LoaderArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getLoginCallback } from "~/data/login";
-import type { SpotifyAuthorizationResponse } from "shared-types";
-import { authentication, parseCookie } from "~/cookies";
+import { getLoginCallback } from "~/data/api/login";
+import type { AuthCookie, AuthorizationCallbackResponse } from "shared-types";
+import { authentication } from "~/cookies";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const query = request.url.split("?")[1] || "";
 
   const response = await getLoginCallback(query);
-  const data = (await response.json()) as SpotifyAuthorizationResponse;
+  const data = (await response.json()) as
+    | AuthorizationCallbackResponse
+    | { error: string };
 
-  if (data) {
-    const authCookie = (await parseCookie(authentication, request)) || {};
-    authCookie.access_token = data.access_token;
-    authCookie.refresh_token = data.refresh_token;
-    return redirect("/search", {
-      headers: {
-        "Set-Cookie": await authentication.serialize(authCookie, {
-          expires: new Date(data.expires),
-        }),
-      },
-    });
+  if (!data || "error" in data) {
+    return redirect("/?error=auth_error");
   }
 
-  return redirect("/?error=auth_error");
-};
+  const authCookie: AuthCookie = {
+    access_token: data.access_token,
+    refresh_token: data.refresh_token,
+    name: data.profile.display_name,
+    image_url: data.profile.images?.[0]?.url,
+  };
 
-const Callback = () => {
-  const data = useLoaderData<typeof loader>();
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+  return redirect("/dashboard", {
+    headers: {
+      "Set-Cookie": await authentication.serialize(authCookie, {
+        expires: new Date(data.expires),
+      }),
+    },
+  });
 };
-
-export default Callback;
