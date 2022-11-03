@@ -14,7 +14,9 @@
     },
     "frontend#build": {
       "env": [
-        "API_HOST"
+        "API_HOST",
+        "COOKIE_SECRET",
+        "NODE_ENV"
       ],
       "outputs": [
         "build/**",

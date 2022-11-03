@@ -1,4 +1,4 @@
-import { API_HOST } from "./api";
+import { API_HOST } from "~/config";
 
 type Health = {
   ok: boolean;

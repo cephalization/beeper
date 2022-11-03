@@ -1,4 +1,4 @@
-import { API_HOST } from "./api";
+import { API_HOST } from "~/config";
 
 export const getLogin = async () => await fetch(`${API_HOST}/login`);
 

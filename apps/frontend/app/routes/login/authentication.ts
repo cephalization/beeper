@@ -1,24 +1,28 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { authentication, validateAuthentication } from "~/cookies";
+import {
+  destroySessionHeader,
+  getAuthFromSession,
+  requestSession,
+} from "~/sessions";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const [valid, authCookie] = await validateAuthentication(request);
+  const session = await requestSession(request);
+  const auth = getAuthFromSession(session);
 
   return json({
-    authenticated: valid,
-    authentication: authCookie,
+    authenticated: !!auth,
+    authentication: auth,
   });
 };
 
 export const action = async ({ request }: ActionArgs) => {
+  const session = await requestSession(request);
   if (request.method.toLowerCase() === "delete") {
     return redirect("/", {
       headers: {
-        "Set-Cookie": await authentication.serialize(null, {
-          expires: new Date(0),
-        }),
+        ...(await destroySessionHeader(session)),
       },
     });
   }

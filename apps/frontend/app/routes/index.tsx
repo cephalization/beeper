@@ -1,11 +1,13 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-import { validateAuthentication } from "~/cookies";
+import { getAuthFromSession, requestSession } from "~/sessions";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const [valid] = await validateAuthentication(request);
-  if (valid) {
+  const session = await requestSession(request);
+  const auth = getAuthFromSession(session);
+
+  if (auth) {
     return redirect("/dashboard");
   }
 

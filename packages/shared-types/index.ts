@@ -15,7 +15,7 @@ export type AuthorizationCallbackResponse = SpotifyAuthorizationResponse & {
   profile: SpotifyProfileResponse;
 };
 
-export type AuthCookie = {
+export type AuthSession = {
   access_token: string;
   refresh_token: string;
   image_url?: string;
