@@ -1,8 +1,13 @@
 import clsx from "clsx";
+import type { AuthSession } from "shared-types";
 import Avatar from "../Avatar";
 import Search from "../Search";
 
-const Navbar = () => {
+type NavbarProps = {
+  authentication: AuthSession | null;
+};
+
+const Navbar = ({ authentication }: NavbarProps) => {
   return (
     <nav
       className={clsx(
@@ -10,7 +15,7 @@ const Navbar = () => {
       )}
     >
       <Search />
-      <Avatar />
+      <Avatar authentication={authentication} />
     </nav>
   );
 };
