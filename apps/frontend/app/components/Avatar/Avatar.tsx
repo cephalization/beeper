@@ -58,7 +58,8 @@ const Avatar = () => {
         type="submit"
         disabled={transition.state !== "idle"}
       >
-        {transition.state === "submitting" ? (
+        {transition.state === "submitting" &&
+        transition.location.pathname.includes("/login") ? (
           <ArrowPathIcon className="h-5 w-5 animate-spin" />
         ) : (
           "Connect"

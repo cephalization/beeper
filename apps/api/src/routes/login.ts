@@ -10,7 +10,12 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { RouterDef } from ".";
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from "../config";
+import {
+  BasicAuthentication,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+} from "../config";
 
 const baseRoute = "/login";
 
@@ -47,10 +52,6 @@ router.get(
       );
     }
 
-    const authBuffer = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
-      "base64"
-    );
-
     try {
       const authenticationResponse = await got
         .post("https://accounts.spotify.com/api/token", {
@@ -60,7 +61,7 @@ router.get(
             grant_type: "authorization_code",
           },
           headers: {
-            Authorization: `Basic ${authBuffer}`,
+            Authorization: BasicAuthentication,
             "Content-Type": "application/x-www-form-urlencoded",
           },
         })

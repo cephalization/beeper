@@ -1,4 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { Form } from "@remix-run/react";
 import clsx from "clsx";
 
 type SearchProps = {
@@ -14,7 +15,7 @@ type SearchProps = {
 
 const Search = ({ className, customClassNames = {} }: SearchProps) => {
   return (
-    <div className={clsx(className, "flex w-full h-9")}>
+    <Form className={clsx(className, "flex w-full h-9")} action="/search">
       <label
         className={clsx(customClassNames.label, "sr-only")}
         htmlFor="search-field"
@@ -49,9 +50,10 @@ const Search = ({ className, customClassNames = {} }: SearchProps) => {
           placeholder="Search"
           type="search"
           name="search"
+          minLength={1}
         />
       </div>
-    </div>
+    </Form>
   );
 };
 
