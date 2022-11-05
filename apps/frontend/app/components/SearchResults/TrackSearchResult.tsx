@@ -1,6 +1,6 @@
 import type { SerializeFrom } from "@remix-run/node";
 import type { Track } from "shared-types/spotify/track";
-import { formatDuration } from "~/utils";
+import { formatDuration } from "~/utils/utils";
 import Link from "../Link";
 
 type TrackSearchResultProps = {
