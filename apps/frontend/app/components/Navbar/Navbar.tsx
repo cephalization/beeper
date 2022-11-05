@@ -1,16 +1,17 @@
 import clsx from "clsx";
+import type { AuthSession } from "shared-types";
 import Avatar from "../Avatar";
-import Search from "../Search";
+import Search from "../AutocompleteSearch";
 
-const Navbar = () => {
+type NavbarProps = {
+  authentication: AuthSession | null;
+};
+
+const Navbar = ({ authentication }: NavbarProps) => {
   return (
-    <nav
-      className={clsx(
-        "w-screen h-14 p-2 sm:px-24 flex gap-2 justify-center items-center"
-      )}
-    >
+    <nav className={clsx("w-full h-14 flex gap-2 justify-center items-center")}>
       <Search />
-      <Avatar />
+      <Avatar authentication={authentication} />
     </nav>
   );
 };

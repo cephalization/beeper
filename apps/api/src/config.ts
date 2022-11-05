@@ -11,3 +11,8 @@ const requiredEnv = [CLIENT_ID, CLIENT_SECRET];
 if (requiredEnv.some((e) => e === undefined)) {
   throw new Error("Required environment variables not found");
 }
+
+const authBuffer = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
+  "base64"
+);
+export const BasicAuthentication = `Basic ${authBuffer}`;

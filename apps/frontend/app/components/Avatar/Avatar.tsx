@@ -1,25 +1,26 @@
 import { ArrowPathIcon, UserCircleIcon } from "@heroicons/react/20/solid";
-import { Form, useFetcher, useTransition } from "@remix-run/react";
+import { Form, useTransition } from "@remix-run/react";
 import clsx from "clsx";
-import { useEffect } from "react";
+import type { AuthSession } from "shared-types";
 
 const buttonClasses = clsx(
   "flex w-24 h-9 items-center flex-1 p-2 rounded whitespace-nowrap text-xs"
 );
 
-const Avatar = () => {
+type AvatarProps = {
+  authentication: AuthSession | null;
+};
+
+const Avatar = ({ authentication }: AvatarProps) => {
   const transition = useTransition();
-  const fetcher = useFetcher();
 
-  useEffect(() => {
-    if (fetcher.type === "init") {
-      fetcher.load("/login/authentication");
-    }
-  }, [fetcher]);
+  const submittingLoginInformation =
+    transition.state === "submitting" &&
+    transition.location.pathname.includes("/login");
 
-  if (fetcher.data?.authenticated) {
+  if (authentication) {
     return (
-      <fetcher.Form method="delete" action="/login/authentication">
+      <Form method="delete" action="/login/authentication?method=delete">
         <button
           className={clsx(
             buttonClasses,
@@ -29,11 +30,11 @@ const Avatar = () => {
           )}
           id="avatar-menu"
           name="avatar-menu"
-          disabled={fetcher.state === "submitting"}
+          disabled={submittingLoginInformation}
         >
-          {fetcher.data.authentication?.image_url ? (
+          {authentication?.image_url ? (
             <img
-              src={fetcher.data.authentication?.image_url}
+              src={authentication.image_url}
               alt="user profile"
               className="rounded-full h-5 w-5 mr-1 max-w-none"
             ></img>
@@ -42,7 +43,7 @@ const Avatar = () => {
           )}
           <span>Sign out</span>
         </button>
-      </fetcher.Form>
+      </Form>
     );
   }
 
@@ -58,7 +59,7 @@ const Avatar = () => {
         type="submit"
         disabled={transition.state !== "idle"}
       >
-        {transition.state === "submitting" ? (
+        {submittingLoginInformation ? (
           <ArrowPathIcon className="h-5 w-5 animate-spin" />
         ) : (
           "Connect"
