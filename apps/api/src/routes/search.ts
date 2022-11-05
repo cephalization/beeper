@@ -15,7 +15,9 @@ router.get("/", async (req, res) => {
 
   const Authorization = getAnyAuthorizationHeader(authHeader);
 
-  console.log(Authorization);
+  if (!qs || qs === "q=") {
+    return res.status(204).send();
+  }
 
   try {
     const searchResponse = await got

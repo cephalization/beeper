@@ -1,5 +1,5 @@
 import { Combobox, Transition } from "@headlessui/react";
-import { Link, useFetcher } from "@remix-run/react";
+import { useFetcher, useNavigate } from "@remix-run/react";
 import clsx from "clsx";
 import { Fragment, useRef } from "react";
 import type { Track } from "shared-types/spotify/track";
@@ -11,6 +11,7 @@ type AutocompleteSearchProps = {
 const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
   const fetcher = useFetcher();
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const tracks = fetcher.data?.results?.tracks?.items || [];
 
@@ -20,14 +21,22 @@ const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
       action="/search"
       autoComplete="off"
     >
-      <Combobox nullable name="search" value={null}>
+      <Combobox
+        nullable
+        name="search"
+        value={null}
+        onChange={(track: Track) => {
+          if (track) {
+            return navigate(`/track/${track.id}`);
+          }
+        }}
+      >
         <div className="relative w-full">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input
               className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 rounded-lg text-gray-900 focus:ring-0"
               displayValue={(track: Track) => track?.name}
               onChange={(event) =>
-                event.currentTarget.value &&
                 fetcher.load(`/search?search=${event.currentTarget.value}`)
               }
               name="search"
@@ -44,15 +53,17 @@ const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
             <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {tracks.length === 0 ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                  {inputRef.current?.value?.length
-                    ? "Nothing found"
-                    : "Search for a track..."}
+                  <p className="text-gray-400">
+                    {fetcher.state === "loading"
+                      ? "Loading..."
+                      : inputRef.current?.value?.length
+                      ? "Nothing found"
+                      : "Results will load as you type"}
+                  </p>
                 </div>
               ) : (
                 tracks.map((track: Track) => (
                   <Combobox.Option
-                    as={Link}
-                    to={`/track/${track.id}`}
                     onClick={() => {
                       if (inputRef.current?.value) {
                         inputRef.current.value = "";
