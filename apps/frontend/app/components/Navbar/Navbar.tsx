@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { AuthSession } from "shared-types";
 import Avatar from "../Avatar";
-import Search from "../Search";
+import Search from "../AutocompleteSearch";
 
 type NavbarProps = {
   authentication: AuthSession | null;
