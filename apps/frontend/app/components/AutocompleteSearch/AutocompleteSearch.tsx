@@ -72,7 +72,7 @@ const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
                     key={track.id}
                     className={({ active }) =>
                       clsx(
-                        "block relative cursor-default select-none py-2 pl-10 pr-4",
+                        "block relative cursor-default select-none py-2 px-4",
                         !active && "text-gray-900",
                         active && "bg-green-600 text-white"
                       )
