@@ -1,6 +1,7 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import type { Track } from "shared-types/spotify/track";
 import SearchResults from "~/components/SearchResults";
 import { getSearch } from "~/data/api/search";
 import { requestSession, getAuthFromSession } from "~/sessions";
@@ -25,16 +26,29 @@ const Search = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Search Results: "{query}"</h1>
-      {results !== null ? (
-        <div className="mt-4 rounded-sm">
-          <SearchResults results={results} />
-        </div>
-      ) : (
-        <div>
-          <h2>An error occurred loading search results!</h2>
+      {error && (
+        <div className="mt-4">
+          <h2 className="text-lg text-slate-500">
+            An error occurred loading search results, please try again.
+          </h2>
           <p>{error && error.message}</p>
         </div>
       )}
+      <SearchResults
+        results={
+          results || {
+            tracks: {
+              items: [] as SerializeFrom<Track[]>,
+              href: "",
+              limit: 0,
+              next: "",
+              previous: "",
+              total: 0,
+              offset: 0,
+            },
+          }
+        }
+      />
     </div>
   );
 };

@@ -37,14 +37,14 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function App() {
   const { authentication } = useLoaderData<typeof loader>();
   return (
-    <html lang="en">
+    <html lang="en" className="bg-slate-100 p-2 sm:px-8 lg:px-24 xl:px-40">
       <head>
         <Meta />
         <Links />
       </head>
-      <body className="bg-slate-100">
+      <body>
         <Navbar authentication={authentication} />
-        <section className="p-2 sm:p-8 sm:px-24">
+        <section className="mt-4">
           <Outlet />
         </section>
         <ScrollRestoration />

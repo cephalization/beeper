@@ -8,7 +8,7 @@ export type Tracks = {
   limit: number;
   next: string;
   offset: number;
-  previous: null;
+  previous: string;
   total: number;
 };
 

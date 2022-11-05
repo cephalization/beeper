@@ -9,11 +9,7 @@ type NavbarProps = {
 
 const Navbar = ({ authentication }: NavbarProps) => {
   return (
-    <nav
-      className={clsx(
-        "w-screen h-14 p-2 sm:px-24 flex gap-2 justify-center items-center"
-      )}
-    >
+    <nav className={clsx("w-full h-14 flex gap-2 justify-center items-center")}>
       <Search />
       <Avatar authentication={authentication} />
     </nav>
