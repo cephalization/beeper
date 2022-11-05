@@ -34,7 +34,7 @@ const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
         <div className="relative w-full">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input
-              className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 rounded-lg text-gray-900 focus:ring-0"
+              className="w-full border-none text-base py-2 pl-3 pr-10 leading-5 rounded-lg text-gray-900 focus:ring-0"
               displayValue={(track: Track) => track?.name}
               onChange={(event) =>
                 fetcher.load(`/search?search=${event.currentTarget.value}`)
