@@ -1,6 +1,5 @@
 import { Router } from "express";
 import got from "got";
-import querystring from "query-string";
 import { Track, TrackFeatures } from "shared-types/spotify/track";
 
 import { RouterDef } from ".";

@@ -58,28 +58,30 @@ const TrackId = () => {
         )}
       </div>
 
-      <div className="mt-4 bg-slate-200 text-slate-100 p-4 rounded">
-        <div>
-          <h3 className="text-lg font-medium leading-6 text-gray-600">
-            Features
-          </h3>
-          <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {readableFeatures(features).map(([key, value]) => (
-              <div
-                key={key}
-                className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6"
-              >
-                <dt className="truncate text-sm font-medium text-gray-500">
-                  {key}
-                </dt>
-                <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-                  {value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+      {!("ok" in features) && (
+        <div className="mt-4 bg-slate-200 text-slate-100 p-4 rounded">
+          <div>
+            <h3 className="text-lg font-medium leading-6 text-gray-600">
+              Features
+            </h3>
+            <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {readableFeatures(features).map(([key, value]) => (
+                <div
+                  key={key}
+                  className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6"
+                >
+                  <dt className="truncate text-sm font-medium text-gray-500">
+                    {key}
+                  </dt>
+                  <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

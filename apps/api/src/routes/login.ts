@@ -10,12 +10,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { RouterDef } from ".";
-import {
-  BasicAuthentication,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI,
-} from "../config";
+import { BasicAuthentication, CLIENT_ID, REDIRECT_URI } from "../config";
 
 const baseRoute = "/login";
 
