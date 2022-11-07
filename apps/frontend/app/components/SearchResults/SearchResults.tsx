@@ -12,30 +12,30 @@ const SearchResults = ({ results }: SearchResultsProps) => {
       <div className="mt-4 flex flex-col">
         <div className="inline-block min-w-full align-middle">
           <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-300 md:rounded-lg">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-200 md:rounded-lg">
+              <thead className="bg-slate-200">
                 <tr>
                   <th
                     scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-600 sm:pl-6"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    className="hidden lg:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    className="hidden lg:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-600"
                   >
                     Album
                   </th>
                   <th
                     scope="col"
-                    className="hidden xl:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    className="hidden xl:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-600"
                   >
                     Duration
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
+              <tbody className="divide-y divide-slate-200 bg-white">
                 {results.tracks.items.map((track) => (
                   <TrackSearchResult key={track.id} track={track} />
                 ))}

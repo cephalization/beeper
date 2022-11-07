@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      <pre className="overflow-x-scroll mt-4 bg-gray-400 text-slate-100 p-4 rounded-sm">
+      <pre className="overflow-x-scroll mt-4 bg-slate-200 text-gray-600 p-4 rounded-sm">
         {JSON.stringify(data.auth, null, 2)}
       </pre>
     </div>

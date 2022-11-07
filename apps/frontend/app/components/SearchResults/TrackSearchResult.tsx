@@ -22,7 +22,7 @@ const TrackSearchResult = ({ track }: TrackSearchResultProps) => {
           <div className="ml-4 pr-10 max-w-full">
             <Link
               to={`/track/${track.id}`}
-              className="block whitespace-nowrap overflow-hidden text-ellipsis font-medium text-gray-900"
+              className="block whitespace-nowrap overflow-hidden text-ellipsis font-medium"
             >
               {track.name}
             </Link>
@@ -33,7 +33,7 @@ const TrackSearchResult = ({ track }: TrackSearchResultProps) => {
         </div>
       </td>
       <td className="hidden lg:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <div className="text-gray-900">{track.album.name}</div>
+        <div>{track.album.name}</div>
       </td>
       <td className="hidden xl:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {formatDuration(track.duration_ms)}
