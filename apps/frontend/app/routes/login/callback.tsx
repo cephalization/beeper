@@ -6,6 +6,7 @@ import {
   destroySessionHeader,
   requestSession,
   setAuthInSession,
+  setErrorInSession,
 } from "~/sessions";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -35,9 +36,13 @@ export const loader = async ({ request }: LoaderArgs) => {
   const success = setAuthInSession(session, authSession);
 
   if (!success) {
-    return redirect("/?error=auth_error", {
+    setErrorInSession(
+      session,
+      "Could not authenticate with Spotify. Please try again later."
+    );
+    return redirect("/", {
       headers: {
-        ...(await destroySessionHeader(session)),
+        ...(await commitSessionHeader(session)),
       },
     });
   }

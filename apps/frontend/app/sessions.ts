@@ -64,6 +64,39 @@ export const setAuthInSession = (session: Session, auth: AuthSession) => {
   return true;
 };
 
+const errorSessionSchema = z.string();
+
+export const getErrorFromSession = (session: Session) => {
+  const error = session.get("error");
+
+  const parsed = errorSessionSchema.safeParse(error);
+
+  if (!parsed.success) {
+    return null;
+  }
+
+  return parsed.data;
+};
+
+export const setErrorInSession = (
+  session: Session,
+  error: z.infer<typeof errorSessionSchema>
+) => {
+  const parsed = errorSessionSchema.safeParse(error);
+
+  if (!parsed.success) {
+    return false;
+  }
+
+  session.set("error", parsed.data);
+
+  return true;
+};
+
+export const removeErrorInSession = (session: Session) => {
+  session.unset("error");
+};
+
 export const commitSessionHeader = async (session: Session) => ({
   "Set-Cookie": await commitSession(session),
 });

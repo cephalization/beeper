@@ -9,9 +9,14 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
+import ErrorFlash from "./components/ErrorFlash";
 
 import Navbar from "./components/Navbar";
-import { getAuthFromSession, requestSession } from "./sessions";
+import {
+  getAuthFromSession,
+  getErrorFromSession,
+  requestSession,
+} from "./sessions";
 import styles from "./styles/app.css";
 
 export const meta: MetaFunction = () => ({
@@ -28,14 +33,16 @@ export const links: LinksFunction = () => [
 export const loader = async ({ request }: LoaderArgs) => {
   const session = await requestSession(request);
   const auth = getAuthFromSession(session);
+  const error = getErrorFromSession(session);
 
   return json({
     authentication: auth,
+    error,
   });
 };
 
 export default function App() {
-  const { authentication } = useLoaderData<typeof loader>();
+  const { authentication, error } = useLoaderData<typeof loader>();
   return (
     <html lang="en" className="bg-slate-100 p-2 sm:px-8 lg:px-24 xl:px-40">
       <head>
@@ -47,6 +54,7 @@ export default function App() {
         <section className="mt-4">
           <Outlet />
         </section>
+        <ErrorFlash error={error} />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
