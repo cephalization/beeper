@@ -9,13 +9,13 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const session = await requestSession(request);
   const auth = getAuthFromSession(session);
 
-  if (!auth || !params.trackId) {
+  if (!params.trackId) {
     return redirect("/");
   }
 
   try {
-    const track = await getTrack(params.trackId, auth.access_token);
-    const features = await getTrackFeatures(params.trackId, auth.access_token);
+    const track = await getTrack(params.trackId, auth?.access_token);
+    const features = await getTrackFeatures(params.trackId, auth?.access_token);
 
     if ("ok" in track) {
       throw new Error("Track could not be loaded");
