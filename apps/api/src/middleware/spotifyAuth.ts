@@ -7,17 +7,19 @@ import { WatchError } from "redis";
 const SPOTIFY_AUTH_KEY = "server_auth_spotify";
 const client = getClient();
 
-function restrictFunctionCalls(
-  fn: (..._f_args: any[]) => Promise<any>,
-  maxCalls: number
-) {
+function restrictFunctionCalls<
+  T extends (...args: Parameters<T>) => Promise<unknown>
+>(fn: T, maxCalls: number) {
   let count = 0;
-  return async function (...args: any[]) {
+  return async function (...args: Parameters<T>) {
+    console.log({ count });
     if (count++ < maxCalls) {
       const out = await fn(...args);
       count--;
       return out;
     }
+
+    count--;
 
     return false;
   };

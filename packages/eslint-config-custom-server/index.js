@@ -1,5 +1,10 @@
 module.exports = {
-  extends: ["eslint:recommended", "turbo"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "turbo",
+  ],
   env: {
     node: true,
     es6: true,

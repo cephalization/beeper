@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { json, redirect } from "react-router";
 import TopArtists from "~/components/TopArtists";
 import TopTracks from "~/components/TopTracks";
 import {
@@ -25,13 +25,13 @@ export const loader = async ({ request }: LoaderArgs) => {
     .transform((v) => (!v ? "medium_term" : v))
     .parse(url.searchParams.get("time_range"));
 
-  const topTracks = getTopTracks(auth.access_token, timeRange);
-  const topArtists = getTopArtists(auth.access_token, timeRange);
+  const topTracks = await getTopTracks(auth.access_token, timeRange);
+  const topArtists = await getTopArtists(auth.access_token, timeRange);
 
   return json({
     auth,
-    topTracks: await topTracks,
-    topArtists: await topArtists,
+    topTracks,
+    topArtists,
     timeRange,
   });
 };

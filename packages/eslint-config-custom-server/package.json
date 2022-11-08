@@ -6,7 +6,8 @@
   "main": "index.js",
   "dependencies": {
     "eslint-config-turbo": "latest",
-    "@typescript-eslint/parser": "latest"
+    "@typescript-eslint/parser": "latest",
+    "@typescript-eslint/eslint-plugin": "5.42.1"
   },
   "publishConfig": {
     "access": "public"

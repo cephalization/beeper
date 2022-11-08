@@ -1,6 +1,6 @@
 export type ResponseError = {
   ok: false;
-  error: string;
+  error: Error;
 };
 
 export const isResponseError = (

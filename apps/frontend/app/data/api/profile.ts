@@ -6,6 +6,7 @@ import type {
 } from "shared-types/spotify/profile";
 import { z } from "zod";
 import { API_HOST } from "~/config";
+import type { ResponseError } from "./types";
 import { isResponseError } from "./types";
 
 export const timeRangeSchema = z
@@ -51,7 +52,7 @@ export const getTopArtists = async (
 ) => {
   const response = await getTop("artists", time_range, accessToken);
 
-  if (isResponseError(response)) {
+  if ("ok" in response) {
     return response;
   }
 
@@ -70,7 +71,7 @@ const getTop = async (
         headers: { Authorization: accessToken },
       }
     );
-    const json = await response.json();
+    const json = (await response.json()) as TopArtists | TopTracks;
 
     return json;
   } catch (e) {
@@ -78,6 +79,6 @@ const getTop = async (
     return {
       ok: false,
       error: new Error("Could not connect to api"),
-    };
+    } as ResponseError;
   }
 };
