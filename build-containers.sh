@@ -6,4 +6,4 @@ docker network create app_network
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build --parallel
 
 # Start prod containers in the background
-docker-compose -f docker-compose.yml up -d
+docker-compose -f docker-compose.build.yml up -d
