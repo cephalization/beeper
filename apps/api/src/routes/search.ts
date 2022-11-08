@@ -13,7 +13,13 @@ router.get("/", async (req, res) => {
   const qs = querystring.extract(req.url);
   const authHeader = req.headers.authorization;
 
-  const Authorization = getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyAuthorizationHeader(authHeader);
+
+  if (!Authorization) {
+    return res
+      .status(401)
+      .json({ error: "Could not authenticate with Spotify." });
+  }
 
   if (!qs || qs === "q=") {
     return res.status(204).send();

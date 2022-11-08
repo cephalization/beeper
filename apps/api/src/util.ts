@@ -1,7 +1,22 @@
-import { BasicAuthentication } from "./config";
+import { getClientSpotifyAuthentication } from "./middleware/spotifyAuth";
 
-// This is wrong, you will never fallback to Basic auth for a request
-// you use Basic to get Bearer for a user or Basic to get Bearer for the server
-// then make all requests with Bearer auth
-export const getAnyAuthorizationHeader = (accessToken?: string) =>
-  accessToken ? `Bearer ${accessToken}` : BasicAuthentication;
+/**
+ * Use the given Bearer auth from spotify or fallback to the server's auth
+ *
+ * NOTE should only be used on un-scoped routes like search
+ *
+ * @param accessToken a Bearer access token from spotify
+ *
+ * @returns {string}
+ */
+export const getAnyAuthorizationHeader = async (accessToken?: string) => {
+  const auth = accessToken
+    ? accessToken
+    : await getClientSpotifyAuthentication();
+
+  if (!auth) {
+    return null;
+  }
+
+  return `Bearer ${auth}`;
+};

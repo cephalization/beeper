@@ -20,7 +20,10 @@ export default function Index() {
       <h1 className="text-2xl font-bold">Beeper</h1>
       <div className="p-4 mt-4 rounded-sm bg-slate-200 font-light text-gray-600">
         <p>Search for tracks on spotify, see info about em.</p>
-        <p>Connect your Spotify account to Beeper, see info about yourself.</p>
+        <p>
+          Connect your Spotify account to Beeper, personalize your searches, and
+          see info about yourself.
+        </p>
       </div>
     </div>
   );

@@ -13,9 +13,13 @@ router.get("/:trackId", async (req, res) => {
   const { trackId } = req.params;
   const authHeader = req.headers.authorization;
 
-  const Authorization = getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyAuthorizationHeader(authHeader);
 
-  console.log({ trackId, Authorization, authHeader });
+  if (!Authorization) {
+    return res
+      .status(402)
+      .json({ error: "Could not authenticate with Spotify." });
+  }
 
   if (!trackId) {
     return res.status(204).send();
@@ -41,9 +45,13 @@ router.get("/:trackId/features", async (req, res) => {
   const { trackId } = req.params;
   const authHeader = req.headers.authorization;
 
-  const Authorization = getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyAuthorizationHeader(authHeader);
 
-  console.log({ trackId, Authorization, authHeader });
+  if (!Authorization) {
+    return res
+      .status(402)
+      .json({ error: "Could not authenticate with Spotify." });
+  }
 
   if (!trackId) {
     return res.status(204).send();

@@ -2,18 +2,13 @@ import { Combobox, Transition } from "@headlessui/react";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import clsx from "clsx";
 import { Fragment, useRef } from "react";
-import type { AuthSession } from "shared-types";
 import type { Track } from "shared-types/spotify/track";
 
 type AutocompleteSearchProps = {
   className?: string;
-  authentication?: AuthSession | null;
 };
 
-const AutocompleteSearch = ({
-  className,
-  authentication,
-}: AutocompleteSearchProps) => {
+const AutocompleteSearch = ({ className }: AutocompleteSearchProps) => {
   const fetcher = useFetcher();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -31,34 +26,27 @@ const AutocompleteSearch = ({
         name="search"
         value={null}
         onChange={(track: Track) => {
-          if (track && authentication) {
+          if (track) {
             return navigate(`/track/${track.id}`);
           }
         }}
-        disabled={!authentication}
       >
         <div className="relative w-full">
           <div
             className={clsx(
               "relative w-full cursor-default overflow-hidden rounded-lg text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm",
-              authentication ? "bg-white" : "bg-slate-200"
+              "bg-white"
             )}
           >
             <Combobox.Input
               className="w-full border-none text-base py-2 pl-3 pr-10 leading-5 rounded-lg text-gray-900 focus:ring-0"
               displayValue={(track: Track) => track?.name}
               onChange={(event) =>
-                authentication &&
                 fetcher.load(`/search?search=${event.currentTarget.value}`)
               }
               name="search"
               ref={inputRef}
-              placeholder={
-                authentication
-                  ? "Search for a track"
-                  : "Connect with Spotify to search"
-              }
-              disabled={!authentication}
+              placeholder={"Search for a track"}
             />
           </div>
           <Transition
