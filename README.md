@@ -9,14 +9,6 @@ Spotify track information utility
 
 # Development
 
-## DISCLAIMERS
-
-- This stack is built off of `@remix-run/node@deferred` and `@remix-run/react@deferred`
-  - Pros:
-    - Streaming responses!
-  - Cons:
-    - Things break! (sometimes)
-
 ## What's inside?
 
 This Remix Starter includes a [Turborepo](https://turbo.build/repo) that has the following packages and apps:
@@ -45,7 +37,19 @@ This Remix Starter includes a Turborepo that has some additional tools already s
 
 - [x] Docker
   - `build-containers.sh` will run the necessary commands to stand up the api and frontend containers using `docker-compose`
-- [ ] Railway
+    - this is a prod-like deployment, could work for a closer to bare metal deploy
+  - `docker-compose up` will just run redis, configured for local development. You can run the turbo apps with `turbo run dev`
+    for hot reloading
+- [x] Railway
+  - configure 3 services
+    - frontend
+    - api
+    - redis
+  - For the turborepo services, frontend and api, configure the env var NIXPACKS_TURBO_APP_NAME
+    - set value to `frontend` for the frontend and `api` for the api
+  - Configure the watch paths for each turborepo service to include that service's app dir and the `/packages` dir
+  - Configure all env vars for each service as declared in the /apps/\*/.env.example files and /turbo.json
+    - For redis env vars, copy the uri from the redis service config in railway
 
 ## Using this stack
 
