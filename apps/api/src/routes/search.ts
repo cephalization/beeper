@@ -3,7 +3,7 @@ import got from "got";
 import querystring from "query-string";
 
 import { RouterDef } from ".";
-import { getAnyAuthorizationHeader } from "../util";
+import { getAnyBearerAuth } from "../util";
 
 const baseRoute = "/search";
 
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
   const qs = querystring.extract(req.url);
   const authHeader = req.headers.authorization;
 
-  const Authorization = await getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyBearerAuth(authHeader);
 
   if (!Authorization) {
     return res

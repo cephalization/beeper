@@ -1,5 +1,11 @@
 import { getClientSpotifyAuthentication } from "./middleware/spotifyAuth";
 
+export const formatBearerAuth = (accessToken?: string) => {
+  if (!accessToken) return null;
+
+  return `Bearer ${accessToken}`;
+};
+
 /**
  * Use the given Bearer auth from spotify or fallback to the server's auth
  *
@@ -9,7 +15,7 @@ import { getClientSpotifyAuthentication } from "./middleware/spotifyAuth";
  *
  * @returns {string}
  */
-export const getAnyAuthorizationHeader = async (accessToken?: string) => {
+export const getAnyBearerAuth = async (accessToken?: string) => {
   const auth = accessToken
     ? accessToken
     : await getClientSpotifyAuthentication();
@@ -18,5 +24,5 @@ export const getAnyAuthorizationHeader = async (accessToken?: string) => {
     return null;
   }
 
-  return `Bearer ${auth}`;
+  return formatBearerAuth(auth);
 };

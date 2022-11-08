@@ -1,4 +1,7 @@
-export interface Profile {
+import { Artist } from "./artist";
+import { Track } from "./track";
+
+export type Profile = {
   country: string;
   display_name: string;
   email: string;
@@ -11,7 +14,7 @@ export interface Profile {
   product: string;
   type: string;
   uri: string;
-}
+};
 
 export interface ExplicitContent {
   filter_enabled: boolean;
@@ -32,3 +35,17 @@ export interface Image {
   height: number;
   width: number;
 }
+
+export type Top<T extends Track | Artist> = {
+  href: string;
+  items: T[];
+  limit: number;
+  next?: string | null;
+  offset: number;
+  previous?: string | null;
+  total: number;
+};
+
+export type TopTracks = Top<Track>;
+
+export type TopArtists = Top<Artist>;

@@ -3,7 +3,7 @@ import got from "got";
 import { Track, TrackFeatures } from "shared-types/spotify/track";
 
 import { RouterDef } from ".";
-import { getAnyAuthorizationHeader } from "../util";
+import { getAnyBearerAuth } from "../util";
 
 const baseRoute = "/track";
 
@@ -13,7 +13,7 @@ router.get("/:trackId", async (req, res) => {
   const { trackId } = req.params;
   const authHeader = req.headers.authorization;
 
-  const Authorization = await getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyBearerAuth(authHeader);
 
   if (!Authorization) {
     return res
@@ -45,7 +45,7 @@ router.get("/:trackId/features", async (req, res) => {
   const { trackId } = req.params;
   const authHeader = req.headers.authorization;
 
-  const Authorization = await getAnyAuthorizationHeader(authHeader);
+  const Authorization = await getAnyBearerAuth(authHeader);
 
   if (!Authorization) {
     return res

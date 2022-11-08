@@ -1,6 +1,14 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { json, redirect } from "react-router";
+import TopArtists from "~/components/TopArtists";
+import TopTracks from "~/components/TopTracks";
+import {
+  getTopArtists,
+  getTopTracks,
+  timeRangeSchema,
+} from "~/data/api/profile";
+import { isResponseError } from "~/data/api/types";
 import { getAuthFromSession, requestSession } from "~/sessions";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -11,17 +19,44 @@ export const loader = async ({ request }: LoaderArgs) => {
     return redirect("/");
   }
 
-  return json({ auth });
+  const url = new URL(request.url);
+  const timeRange = timeRangeSchema
+    .nullish()
+    .transform((v) => (!v ? "medium_term" : v))
+    .parse(url.searchParams.get("time_range"));
+
+  const topTracks = getTopTracks(auth.access_token, timeRange);
+  const topArtists = getTopArtists(auth.access_token, timeRange);
+
+  return json({
+    auth,
+    topTracks: await topTracks,
+    topArtists: await topArtists,
+    timeRange,
+  });
 };
 
 const Dashboard = () => {
-  const data = useLoaderData<typeof loader>();
+  const { topTracks, topArtists } = useLoaderData<typeof loader>();
   return (
     <div>
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      <pre className="overflow-x-scroll mt-4 bg-slate-200 text-gray-600 p-4 rounded-sm">
-        {JSON.stringify(data.auth, null, 2)}
-      </pre>
+      {!isResponseError(topTracks) && (
+        <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+          <h2 className="text-lg font-medium leading-6 text-gray-600">
+            Top Tracks
+          </h2>
+          <TopTracks tracks={topTracks.items} />
+        </div>
+      )}
+      {!isResponseError(topArtists) && (
+        <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+          <h2 className="text-lg font-medium leading-6 text-gray-600">
+            Top Artists
+          </h2>
+          <TopArtists artists={topArtists.items} />
+        </div>
+      )}
     </div>
   );
 };

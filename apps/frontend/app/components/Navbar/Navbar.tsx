@@ -10,7 +10,7 @@ type NavbarProps = {
 const Navbar = ({ authentication }: NavbarProps) => {
   return (
     <nav className={clsx("w-full h-14 flex gap-2 justify-center items-center")}>
-      <Search authentication={authentication} />
+      <Search />
       <Avatar authentication={authentication} />
     </nav>
   );
