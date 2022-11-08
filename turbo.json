@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "start": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "build": {
       "outputs": [
         "dist/**",
@@ -30,7 +35,9 @@
       "env": [
         "SPOTIFY_CLIENT_ID",
         "SPOTIFY_CLIENT_SECRET",
-        "SPOTIFY_REDIRECT"
+        "SPOTIFY_REDIRECT",
+        "REDIS_URI",
+        "PORT"
       ],
       "outputs": [
         "dist/**"

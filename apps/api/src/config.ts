@@ -5,8 +5,9 @@ export const REDIRECT_URI =
   process.env.SPOTIFY_REDIRECT || "http://localhost:3000/login/callback";
 export const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 export const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+export const REDIS_URI = process.env.REDIS_URI;
 
-const requiredEnv = [CLIENT_ID, CLIENT_SECRET];
+const requiredEnv = [CLIENT_ID, CLIENT_SECRET, REDIS_URI];
 
 if (requiredEnv.some((e) => e === undefined)) {
   throw new Error("Required environment variables not found");

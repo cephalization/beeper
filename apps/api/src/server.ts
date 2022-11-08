@@ -4,9 +4,15 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { routes } from "./routes";
+import { getClient } from "./services/redis";
+import { spotifyAuth } from "./middleware/spotifyAuth";
 
-export const createServer = () => {
+export const createServer = async () => {
   const app = express();
+
+  const client = getClient();
+  await client.connect();
+
   app
     .disable("x-powered-by")
     .use(cookieParser())
@@ -14,19 +20,9 @@ export const createServer = () => {
     .use(urlencoded({ extended: true }))
     .use(json())
     .use(cors())
-    .get("/message/:name", (req, res) => {
-      return res.json({ message: `hello ${req.params.name}` });
-    })
+    .use(spotifyAuth)
     .get("/healthz", (req, res) => {
       return res.json({ ok: true });
-    })
-    .get("/delayedhealth", async (req, res) => {
-      const requestStart = Date.now();
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      return res.json({
-        ok: true,
-        duration: `${(Date.now() - requestStart) / 1000}s`,
-      });
     });
 
   routes.forEach(([routeName, router]) => {

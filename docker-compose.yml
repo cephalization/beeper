@@ -6,23 +6,35 @@ services:
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
-    restart: always
     ports:
       - 3000:3000
     networks:
       - app_network
     environment:
       - API_HOST=http://api:5001
+    env_file:
+      - apps/frontend/.env
   api:
     container_name: api
+    depends_on:
+      - redis
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
-    restart: always
     ports:
       - 5001:5001
     networks:
       - app_network
+    env_file:
+      - apps/api/.env
+  redis:
+    container_name: redis
+    image: bitnami/redis:6.0 # same image as https://docs.railway.app/databases/redis
+    networks:
+      - app_network
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    
     
 
 # Define a network, which allows containers to communicate

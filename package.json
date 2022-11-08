@@ -8,6 +8,7 @@
     "apps/*"
   ],
   "scripts": {
+    "start": "turbo run start",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev --no-cache --parallel --continue",
