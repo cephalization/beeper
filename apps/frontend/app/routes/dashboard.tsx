@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
+import Select from "~/components/Select";
 import TopArtists from "~/components/TopArtists";
 import TopTracks from "~/components/TopTracks";
 import {
@@ -20,43 +21,79 @@ export const loader = async ({ request }: LoaderArgs) => {
   }
 
   const url = new URL(request.url);
-  const timeRange = timeRangeSchema
+  const trackTimeRange = timeRangeSchema
     .nullish()
     .transform((v) => (!v ? "medium_term" : v))
-    .parse(url.searchParams.get("time_range"));
+    .parse(url.searchParams.get("track_time_range"));
+  const artistTimeRange = timeRangeSchema
+    .nullish()
+    .transform((v) => (!v ? "medium_term" : v))
+    .parse(url.searchParams.get("artist_time_range"));
 
-  const topTracks = await getTopTracks(auth.access_token, timeRange);
-  const topArtists = await getTopArtists(auth.access_token, timeRange);
+  const topTracks = await getTopTracks(auth.access_token, trackTimeRange);
+  const topArtists = await getTopArtists(auth.access_token, artistTimeRange);
 
   return json({
     auth,
     topTracks,
     topArtists,
-    timeRange,
+    timeRange: {
+      trackTimeRange,
+      artistTimeRange,
+    },
   });
 };
 
+const termOptions = ["long_term", "medium_term", "short_term"].map((t) => ({
+  value: t,
+  id: t,
+  label: t
+    .split("_")
+    .map((tt) => `${tt[0].toUpperCase()}${tt.substring(1)}`)
+    .join(" "),
+}));
+
 const Dashboard = () => {
-  const { topTracks, topArtists } = useLoaderData<typeof loader>();
+  const { topTracks, topArtists, timeRange } = useLoaderData<typeof loader>();
   return (
     <div>
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      {!isResponseError(topTracks) && (
-        <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
-          <h2 className="text-lg font-medium leading-6 text-gray-600">
-            Top Tracks
-          </h2>
-          <TopTracks tracks={topTracks.items} />
-        </div>
-      )}
-      {!isResponseError(topArtists) && (
-        <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
-          <h2 className="text-lg font-medium leading-6 text-gray-600">
-            Top Artists
-          </h2>
-          <TopArtists artists={topArtists.items} />
-        </div>
-      )}
+      <Form method="get">
+        {!isResponseError(topTracks) && (
+          <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+            <h2 className="text-lg font-medium leading-6 text-gray-600">
+              Top Tracks
+            </h2>
+            <Select
+              options={termOptions}
+              defaultValue={
+                termOptions.find((t) => t.value === timeRange.trackTimeRange)
+                  ?.value
+              }
+              name="track_time_range"
+              className="mt-4"
+            />
+            <TopTracks tracks={topTracks.items} />
+          </div>
+        )}
+        {!isResponseError(topArtists) && (
+          <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+            <h2 className="text-lg font-medium leading-6 text-gray-600">
+              Top Artists
+            </h2>
+            <Select
+              options={termOptions}
+              defaultValue={
+                termOptions.find((t) => t.value === timeRange.artistTimeRange)
+                  ?.value
+              }
+              name="artist_time_range"
+              className="mt-4"
+            />
+            <TopArtists artists={topArtists.items} />
+          </div>
+        )}
+      </Form>
     </div>
   );
 };
