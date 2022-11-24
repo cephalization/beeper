@@ -1,4 +1,5 @@
-import { ExternalUrls } from "./meta";
+import { ExternalUrls, Image } from "./meta";
+import { Followers } from "./profile";
 
 export type Artist = {
   external_urls: ExternalUrls;
@@ -6,6 +7,10 @@ export type Artist = {
   id: string;
   name: string;
   type: ArtistType;
+  popularity: number;
+  images: Image[];
+  genres: string[];
+  followers: Followers;
   uri: string;
 };
 

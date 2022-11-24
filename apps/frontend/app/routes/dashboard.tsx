@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
+import clsx from "clsx";
 import Select from "~/components/Select";
 import TopArtists from "~/components/TopArtists";
 import TopTracks from "~/components/TopTracks";
@@ -58,9 +59,9 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      <Form method="get">
+      <Form method="get" className={clsx("flex flex-wrap")}>
         {!isResponseError(topTracks) && (
-          <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+          <div className="mt-4 flex-shrink basis-full md:basis-1/2 bg-slate-200 p-4 pb-0 rounded-sm">
             <h2 className="text-lg font-medium leading-6 text-gray-600">
               Top Tracks
             </h2>
@@ -77,7 +78,7 @@ const Dashboard = () => {
           </div>
         )}
         {!isResponseError(topArtists) && (
-          <div className="mt-4 bg-slate-200 p-4 pb-0 rounded-sm">
+          <div className="mt-4 flex-shrink basis-full md:basis-1/2 bg-slate-200 p-4 pb-0 rounded-sm">
             <h2 className="text-lg font-medium leading-6 text-gray-600">
               Top Artists
             </h2>
