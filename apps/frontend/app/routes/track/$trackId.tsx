@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import Link from "~/components/Link";
 import { getTrack, getTrackFeatures } from "~/data/api/track";
 import { getAuthFromSession, requestSession } from "~/sessions";
 import { readableFeatures } from "~/utils";
@@ -33,6 +34,9 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 const TrackId = () => {
   const { track, features } = useLoaderData<typeof loader>();
 
+  const artist = track.artists[0];
+  const featuredArtists = track.artists.slice(1);
+
   return (
     <div className="w-full">
       <div className="flex w-full justify-between flex-wrap sm:flex-nowrap">
@@ -45,7 +49,14 @@ const TrackId = () => {
           <div className="flex flex-wrap">
             <h1 className="text-2xl font-bold w-full">{track.name}</h1>
             <h2 className="text-lg w-full">
-              {track.artists.map((a) => a.name).join(", ")}
+              {track.artists
+                .map((a) => (
+                  <Link key={a.id} to={`/artist/${a.id}`}>
+                    {a.name}
+                  </Link>
+                ))
+                .flatMap((a) => [a, ", "])
+                .slice(0, -1)}
             </h2>
           </div>
         </div>

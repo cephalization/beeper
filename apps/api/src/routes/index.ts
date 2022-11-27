@@ -1,4 +1,5 @@
 import type { Router } from "express";
+import { artistRouter } from "./artist";
 import { loginRouter } from "./login";
 import { meRouter } from "./me";
 import { searchRouter } from "./search";
@@ -11,4 +12,5 @@ export const routes: RouterDef[] = [
   searchRouter,
   trackRouter,
   meRouter,
+  artistRouter,
 ];

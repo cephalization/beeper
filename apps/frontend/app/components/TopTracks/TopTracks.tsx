@@ -30,7 +30,14 @@ const TopTracks = ({ tracks }: TopTracksProps) => {
               {t.name}
             </Link>
             <p className={clsx("flex-shrink")}>
-              {t.artists.map((a) => a.name).join(", ")}
+              {t.artists
+                .map((a) => (
+                  <Link key={a.id} to={`/artist/${a.id}`}>
+                    {a.name}
+                  </Link>
+                ))
+                .flatMap((a) => [a, ", "])
+                .slice(0, -1)}
             </p>
           </div>
         </li>

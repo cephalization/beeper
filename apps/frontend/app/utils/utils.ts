@@ -40,3 +40,23 @@ export const KEY_INDEX_TO_KEY = [
   ["A♯", "B♭"],
   ["B"],
 ] as const;
+
+export const popularity = (ratio: number) => {
+  if (ratio >= 85) {
+    return "Mainstream";
+  }
+
+  if (ratio >= 75) {
+    return "Super popular";
+  }
+
+  if (ratio >= 50) {
+    return "Popular";
+  }
+
+  if (ratio >= 25) {
+    return "Underground";
+  }
+
+  return "Bedroom artist";
+};

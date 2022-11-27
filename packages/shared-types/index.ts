@@ -1,5 +1,6 @@
 import type { Profile } from "./spotify/profile";
 import type { TrackSearchResults } from "./spotify/search";
+import { Track } from "./spotify/track";
 
 export type SpotifyAuthorizationResponse = {
   access_token: string;
@@ -13,6 +14,8 @@ export type SpotifyAuthorizationResponse = {
 export type SpotifyProfileResponse = Profile;
 
 export type SpotifyTrackSearchResponse = TrackSearchResults;
+
+export type SpotifyArtistTopTracksResponse = { tracks: Track[] };
 
 export type AuthorizationCallbackResponse = SpotifyAuthorizationResponse & {
   profile: SpotifyProfileResponse;
